@@ -1,0 +1,27 @@
+name: Build & Publish
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+  
+env: 
+    DOTNET_VERSION: '6.0.x'
+    DOCKER_IMAGE_NAME: 'github-action-docker-demo'
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    steps: 
+    - name: checkout the code
+      uses: actions/checkout@master
+    - name: set up dotnet core
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: ${{ env. DOTNET_VERSION }}
+    - name: install dependencies
+      run: dotnet restore
+    - name: build
+      run: dotnet build --configuration Release --no-restore
+    - name: publish
+      run: dotnet publish --configuration Release -o ${{env.DOTNET_ROOT}}/myapp
