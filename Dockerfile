@@ -4,6 +4,7 @@ EXPOSE 80
 COPY . ./
 RUN dotnet restore
 RUN dotnet publish -c Release -o out
+RUN dir
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 COPY --from=build-env /app/out .
